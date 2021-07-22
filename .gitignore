@@ -117,3 +117,10 @@ dmypy.json
 .pyre/
 
 .idea/*
+lib64/*
+lib64
+/lib64/*
+
+bin/*
+
+pyvenv.cfg
