@@ -2,9 +2,12 @@ from MicropyGPS import MicropyGPS
 from machine import UART, Pin
 import OledModule
 import Icons
+from config import Config
 import utime
+import urequests
+import WifiModule
 
-gpsLed = Pin(0, Pin.OUT)
+gpsLed = Pin(2, Pin.OUT)
 uart = UART(1, baudrate=9600)
 gps = MicropyGPS()
 
@@ -23,6 +26,9 @@ def read():
         buffer = uart.readline()
         for line in buffer:
             gps.update(line)
+
+        # We update the location through the api
+        updateGeo()
 
 
 # Method to obtain the longitude captured by the GPS
@@ -70,3 +76,15 @@ def displayStatus():
         utime.sleep(5)
         OledModule.displayIcon(Icons.Gps(), 40, 0)
         OledModule.displayText("Lgt " + longitude(), 0, 56)
+
+
+# Method to update the location in the database,
+# by means of a rest api
+# Method to update the location in the database,
+# by means of a rest api
+def updateGeo():
+    url = Config.value("updateGeoUrl")
+    url = str(url) + str("/" + longitude() + "/" + latitude() + "/" + Config.value("vehicle"))
+    request = urequests.get(url)
+    response = request.text
+    print(response)
