@@ -18,7 +18,7 @@ def checkStatus():
 # Start Wifi Connection
 _thread.start_new_thread(WifiModule.connect, ())
 # Start GPS Geocoding
-_thread.start_new_thread(GPSModule.read())
+_thread.start_new_thread(GPSModule.read, ())
 # Power On Servomotors
 _thread.start_new_thread(ServoModule.forward, ())
 # Check GPS and WiFi connection status
